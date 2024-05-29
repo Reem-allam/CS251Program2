@@ -1,0 +1,202 @@
+//
+//  tests.cpp
+//  <Put your header here>
+//
+
+#include <iostream>
+#include "AutocompleteList.h"
+
+using namespace std;
+
+// Tests getSize() on first constructor
+bool size_test1() {
+    AutocompleteList  list;  // empty list
+    if (list.getSize() == 0) {
+        return true;
+    }
+    return false;
+}
+// Tests getSize() on second constructor
+bool size_test2() {
+    int n = 10;
+    AutocompleteList  list(n);  // empty list
+    if (list.getSize() == 10) {
+        return true;
+    }
+    return false;
+}
+
+
+//Tests getSize on third constructor
+bool size_test3(){
+    string filename = "tiny.txt"; //change
+    AutocompleteList list(filename);
+    if(list.getSize() == 6){
+        return true;
+    }
+    return false;
+}
+
+// test operator on empty list
+bool operator_test1(){
+    AutocompleteList list;
+    try{
+        Term term = list[0];
+    }
+    catch(const out_of_range& e){
+        return true;
+    }
+    return false;
+}
+
+// test operator with valid index
+bool operator_test2(){
+    int n= 5;
+    AutocompleteList list(n);
+    Term term = {"query", 100};
+    list[2] = term;
+    if(list[2]== term){
+        return true;
+    }
+    return false;
+}
+
+// test operator with invalid index
+bool operator_test3(){
+    int n = 5;
+    AutocompleteList list(n);
+    try{
+        Term term = list[10];
+    }
+    catch(const out_of_range& e){
+        return true;
+    }
+    return false;
+}
+
+//test allmatches with empty prefix
+bool allMatches_test1(){
+    string filename = "small.txt"; //change
+    AutocompleteList list(filename);
+    AutocompleteList matches = list.allMatches("");
+    if(matches.getSize() == 0){
+        return true;
+    }
+    return false;
+}
+
+// test all matches with non-empty prefix
+bool allMatches_test2(){
+    string filename = "small.txt"; 
+    AutocompleteList list(filename);
+    AutocompleteList matches = list.allMatches("ja");
+    if(matches.getSize() == 3 && matches[0].query == "jared, that kid from kid nation" && matches[1].query == "jam jar" && matches[2].query == "jar of jam jars" ){ 
+        return true;
+    }
+    return false;
+}
+
+//test numberOfMatches on empty prefix
+bool numMatches_test1(){
+    string filename = "small.txt";
+    AutocompleteList list(filename);
+    int numMatches = list.numberOfMatches("");
+    if(numMatches == 0){
+        return true;
+    }
+    return false;
+}
+
+//test numberOfMatches with non-empty prefix
+bool numMatches_test2(){
+    string filename = "small.txt";
+    AutocompleteList list(filename);
+    int numMatches = list.numberOfMatches("ja");
+    if(numMatches == 3){
+        return true;
+    }
+    return false;
+}
+
+
+int main() {
+    // TODO:  Write lots of tests.  Here are two very simple examples.
+    // You need to write a lot more than this.
+    int passed = 0;
+    int failed = 0;
+    // Run tests
+    if (size_test1()) {
+        passed++;
+    } else {
+        cout << "size_test1 failed" << endl;
+        failed++;
+    }
+    if (size_test2()) {
+        passed++;
+    } else {
+        cout << "size_test2 failed" << endl;
+        failed++;
+    }
+
+    if (size_test3()) {
+        passed++;
+    } else {
+        cout << "size_test3 failed" << endl;
+        failed++;
+    }
+
+    if (operator_test1()) {
+        passed++;
+    } else {
+        cout << "operator_test1 failed" << endl;
+        failed++;
+    }
+
+    if (operator_test2()) {
+        passed++;
+    } else {
+        cout << "operator_test2 failed" << endl;
+        failed++;
+    }
+
+    if (operator_test3()) {
+        passed++;
+    } else {
+        cout << "operator_test3 failed" << endl;
+        failed++;
+    }
+
+
+    if (allMatches_test1()) {
+        passed++;
+    } else {
+        cout << "allMatches_test1 failed" << endl;
+        failed++;
+    }
+
+    if (allMatches_test2()) {
+        passed++;
+    } else {
+        cout << "allMatches_test2 failed" << endl;
+        failed++;
+    }
+
+    if (numMatches_test1()) {
+        passed++;
+    } else {
+        cout << "numMatches_test1 failed" << endl;
+        failed++;
+    }
+
+    if (numMatches_test2()) {
+        passed++;
+    } else {
+        cout << "numMatches_test2 failed" << endl;
+        failed++;
+    }
+
+
+    cout << "Tests passed: " << passed << endl;
+    cout << "Tests failed: " << failed << endl;
+    return 0;
+}
